@@ -1,0 +1,82 @@
+import speech_recognition as sr
+import pyttsx3
+import pywhatkit
+import datetime
+import wikipedia
+import pyjokes
+import webbrowser
+
+listener = sr.Recognizer()
+engine = pyttsx3.init()
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[1].id)
+def talk(text):
+    engine.say(text)
+    engine.runAndWait()
+def wishme():
+    hour = int(datetime.datetime.now().hour)
+    if hour>=0 and hour<12:
+        talk('Good morning!')
+    elif hour>=12 and hour<18:
+        talk('good afternoon!')
+    else:
+        talk('good evening!')
+
+    talk('I am ALEXA . please tell me how may i help you')
+def take_command():
+    try:
+        with sr.Microphone() as source:
+            print('listening...')
+            listener.pause_threshold = 1
+            voice = listener.listen(source)
+            command = listener.recognize_google(voice, language='en-in')
+            command = command.lower()
+            if 'alexa' in command:
+                command = command.replace('alexa', '')
+    except:
+        pass
+    return command
+def run_alexa():
+    command = take_command()
+    print(command)
+    if 'play' in command:
+        song = command.replace('play', '')
+        talk('playing' + song)
+        print('playing...')
+        pywhatkit.playonyt(song)
+    elif 'time' in command:
+        time = datetime.datetime.now().strftime('%I:%M %p')
+        print(time)
+        talk('current time is '+ time)
+    elif 'tell me about' in command:
+        person = command.replace('tell me about', '')
+        info = wikipedia.summary(person, 2)
+        print(info)
+        talk(info)
+    elif 'joke' in command:
+        talk(pyjokes.get_joke())
+    elif 'open youtube' in command:
+        webbrowser.open("youtube.com")
+    elif 'open google' in command:
+        webbrowser.open("google.com")
+    elif 'open facebook' in command:
+        webbrowser.open("facebook.com")
+    elif 'open whatsapp' in command:
+        webbrowser.open("web.whatsapp.com")
+    elif 'open netflix' in command:
+        webbrowser.open("netflix.com")
+    elif 'open prime video' in command:
+        webbrowser.open("primevideo.com")
+    elif 'open hotstar' in command:
+        webbrowser.open("hotstar.com")
+    elif 'open chess' in command:
+        webbrowser.open("chess.com")
+    elif 'open gmail' in command:
+        webbrowser.open("mail.google.com")
+
+
+    else:
+        talk('sorry i cant understand')
+        talk('please say it again')
+wishme()
+run_alexa()
