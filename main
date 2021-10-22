@@ -44,37 +44,29 @@ def run_alexa():
         talk('playing' + song)
         print('playing...')
         pywhatkit.playonyt(song)
+
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
         print(time)
         talk('current time is '+ time)
+
     elif 'tell me about' in command:
         person = command.replace('tell me about', '')
         info = wikipedia.summary(person, 2)
         print(info)
         talk(info)
+
     elif 'joke' in command:
         talk(pyjokes.get_joke())
-    elif 'open youtube' in command:
-        webbrowser.open("youtube.com")
-    elif 'open google' in command:
-        webbrowser.open("google.com")
-    elif 'open facebook' in command:
-        webbrowser.open("facebook.com")
-    elif 'open whatsapp' in command:
-        webbrowser.open("web.whatsapp.com")
-    elif 'open netflix' in command:
-        webbrowser.open("netflix.com")
-    elif 'open prime video' in command:
-        webbrowser.open("primevideo.com")
-    elif 'open hotstar' in command:
-        webbrowser.open("hotstar.com")
-    elif 'open chess' in command:
-        webbrowser.open("chess.com")
-    elif 'open gmail' in command:
-        webbrowser.open("mail.google.com")
 
+    elif 'open' in command:
+        command = command.replace('open', '')
+        webbrowser.register('chrome',None,
+        webbrowser.BackgroundBrowser("C://Program Files (x86)//Google//Chrome//Application//chrome.exe"))
+        webbrowser.get('chrome').open(command + ".com")
+        print("opening"+command+"....")
 
+        
     else:
         talk('sorry i cant understand')
         talk('please say it again')
